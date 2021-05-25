@@ -16,13 +16,14 @@ const useStyles = makeStyles({
         outline: "none",
         border: "none",
         marginBottom: "5%",
-        width: "80%"
+        width: "85%"
     },
 
     loginForm: {
+        marginTop: "5%",
         width: "20%",
         textAlign: "center",
-        position: "relative",
+        position: "absolute",
         left: "50%",
         transform: "translate(-50%, 20%)",
         padding: "50px",
@@ -54,7 +55,7 @@ const Register = () => {
             password: password,
         };
         Axios
-            .post("http://localhost:5000/register", body)
+            .post("http://localhost:8888/user/register", body)
             .then((res) => {
                 if (res.data.success) {
                     alert("Account Created");

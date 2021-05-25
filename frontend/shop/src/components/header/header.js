@@ -38,25 +38,32 @@ const useStyles = makeStyles((theme) => ({
     list: {
         width: 250,
     },
+
+    listItem: {
+        marginTop: 20,
+    }
 }));
 
 const Header = () => {
     const classes = useStyles();
 
-    const [state, setState] = React.useState("");
+    const [state, setState] = React.useState(false);
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
             return;
         }
-        setState(open);
+        if (open === true)
+            setState(true);
+        else
+            setState(false);
     };
 
     const list = () => {
         return(<div className={classes.list} role={"presentation"} onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
+                {['Food', 'Drink', 'Fruit'].map((text, index) => (
+                    <ListItem button key={text} className={classes.listItem}>
                         <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                         <ListItemText primary={text} />
                     </ListItem>
@@ -64,8 +71,8 @@ const Header = () => {
             </List>
             <Divider />
             <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem button key={text}>
+                {['Direction', 'About'].map((text, index) => (
+                    <ListItem button key={text} className={classes.listItem}>
                         <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                         <ListItemText primary={text} />
                     </ListItem>
@@ -87,14 +94,13 @@ const Header = () => {
                        </Drawer>
                    </React.Fragment>
                    <Typography variant="h6" className={classes.title}>
-                       News
+                       Menu
                    </Typography>
                    <Button
                        color="inherit"
                        component={Link}
                        to={"login"}
                    >Login</Button>
-
                </Toolbar>
            </AppBar>
         </div>

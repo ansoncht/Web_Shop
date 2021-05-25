@@ -1,11 +1,42 @@
 const express = require('express');
-const sql = require('mssql');
+const mongoose = require('mongoose');
+const cors = require('cors');
+
+require("dotenv").config();
 
 const app = express()
 
 const port = process.env.PORT || 8888;
 
-// config for your database
+// Models
+const user = require("./routes/user")
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.header("Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type");
+  next();
+});
+
+// MongoDB
+mongoose.connect(process.env.DATABASE_ACCESS, {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(() => console.log("Database Connection Success"))
+    .catch(() => {
+        console.log("Database Connection Failed");
+    });
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {});
+
+app.use('/user', user);
+
+/* MSSQL
 const config = {
   user: 'superman',
   password: 'iamon99$',
@@ -41,8 +72,7 @@ sql.connect(config).then(db => {
   }
 }).catch(err => {
   console.log(err);
-})
-
+}) */
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`App listening at http://localhost:${port}`)
 })
